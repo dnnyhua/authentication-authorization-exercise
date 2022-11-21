@@ -1,0 +1,54 @@
+{% extends "base.html"%}
+
+{% block title %} Profile {% endblock %}
+
+{% block content %}
+
+
+
+<div class="container mt-4">
+    <h1 class="display-2 py-4">{{user.username}}</h1>
+    <p>First Name: {{user.first_name}}</p>
+    <p> Last Name: {{user.last_name}}</p>
+    <p>Email: {{user.email}}</p>
+    <form action="/users/{{user.username}}/delete" method="POST">
+        <button type="submit" class="btn btn-danger">Delete Profile</button>
+    </form>
+</div>
+
+
+
+<!-- Feedbacks start -->
+<div class="container my-5">
+    <div class=" mt-4">
+        <h2>
+            Your Feedbacks
+            <a class="btn btn-sm btn-secondary mb-2" href="/users/{{user.username}}/feedback/add">+</a>
+        </h2>
+
+        {% for feedback in feedbacks %}
+        <div class="mt-4 mx-3">
+
+            <h3 class="text-info">
+                <!-- Delete Feedback button -->
+                {{feedback.title}}
+                <form style="display:inline" action="/feedback/{{feedback.id}}/update">
+                    <button class="btn btn-sm btn-primary">Edit</button>
+                </form>
+                <form style="display:inline" action="/feedback/{{feedback.id}}/delete" method="POST">
+                    <button class="btn btn-sm btn-danger">X</button>
+                </form>
+            </h3>
+
+            <span>{{feedback.content}}</span>
+
+        </div>
+
+        {% endfor %}
+    </div>
+
+</div>
+<!-- Feedbacks End -->
+
+
+{% endblock %}

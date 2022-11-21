@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"> -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+            integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+
+    <body>
+        <!-- NAVBAR Start -->
+        <nav class="navbar navbar-dark bg-dark justify-content-between">
+            <div class="container">
+                <a href="/home" class="navbar-brand text-light">The Feed</a>
+                <ul class="nav navbar-nav flex-row float-right">
+                    <!-- If user is logged in display logout on page. Note: With jinja we can access session from here -->
+                    {% if session['username'] %}
+                    <li class="nav-item">
+                        <a href="/users/{{session['username']}}"
+                            class="nav-link text-light px-3">{{session['username']}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/logout" class="nav-link text-light px-3">Logout</a>
+                    </li>
+                    {% else %}
+                    <!-- If user is not logged in, display login and register nav links -->
+                    <li class="nav-item">
+                        <a href="/login" class="nav-link text-light px-3">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/register" class="nav-link text-light">Sign Up</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        <!-- NAVBAR End -->
+
+
+        <!-- Flash Messages Start -->
+        <div class="container mt-3">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, msg in messages%}
+            <!-- bootstrap alert color is based on the category assigned to the flask messages. -->
+            <div class="alert alert-{{category}}">{{ msg }}</div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            {% block content %}
+            {% endblock%}
+        </div>
+        <!-- Flash Messages End -->
+
+    </body>
+
+</html>

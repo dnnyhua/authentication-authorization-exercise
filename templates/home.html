@@ -1,0 +1,29 @@
+{% extends "base.html"%}
+
+{% block title %}The Feed{% endblock%}
+
+{% block content %}
+<h1 class="display-1 py-4">The Feed</h1>
+
+{% for feedback in feedbacks%}
+<div class="container my-5">
+    <h3 class="text-info">
+        {{feedback.title}}
+        <!-- Only display delete button if the feedback belongs to the user
+            need to add permission on the route so that only the user can delete their own feedbacks  -->
+        {% if session['username'] == feedback.username %}
+        <form style="display:inline" action="/feedback/{{feedback.id}}/delete" method="POST">
+            <button class="btn btn-sm btn-danger" type="submit">X</button>
+        </form>
+        {% endif %}
+    </h3>
+    <small>Posted by {{feedback.username}}</small>
+    <p>
+        {{feedback.content}}
+    </p>
+</div>
+
+
+{% endfor %}
+
+{% endblock %}
